@@ -18,7 +18,7 @@
 
 4. **Chạy Chương Trình**:
     ```bash
-    node 1.mjs
+    node + tên file
     ```
 
 ## Chức Năng
