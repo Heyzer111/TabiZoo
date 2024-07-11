@@ -136,17 +136,17 @@ async function processAccount(rawdata, autoUpgrade, proxy) {
             let levelUpResult;
             do {
                 levelUpResult = await levelUp(headers, profileData.level + 1, proxy);
-                if (levelUpResult) {
-                    profileData.level++;
-                    console.log(chalk.green(`Nâng cấp thành công. Level hiện tại: ${profileData.level}`));
+                if (levelUpResult && levelUpResult.success) {
                     const updatedProfile = await getUserProfile(headers, proxy);
+                    profileData.level = updatedProfile.level; // Cập nhật cấp độ sau mỗi lần nâng cấp
                     profileData.coins = updatedProfile.coins; // Cập nhật số dư sau mỗi lần nâng cấp
+                    console.log(chalk.green(`Nâng cấp thành công. Level hiện tại: ${profileData.level}`));
                     console.log(chalk.cyan(`Coins hiện tại: ${profileData.coins}`));
                 } else {
                     console.log(chalk.red('Nâng cấp thất bại, số dư không đủ.'));
                     break;
                 }
-            } while (levelUpResult);
+            } while (levelUpResult && levelUpResult.success);
         }
     }
 }
