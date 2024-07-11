@@ -108,7 +108,7 @@ async function processAccount(rawdata, autoUpgrade) {
             let levelUpResult;
             do {
                 levelUpResult = await levelUp(headers, profileData.level + 1);
-                if (levelUpResult) {
+                if (levelUpResult && levelUpResult.success) {
                     profileData.level++;
                     console.log(chalk.green(`Nâng cấp thành công. Level hiện tại: ${profileData.level}`));
                     const updatedProfile = await getUserProfile(headers);
@@ -118,7 +118,7 @@ async function processAccount(rawdata, autoUpgrade) {
                     console.log(chalk.red('Nâng cấp thất bại, số dư không đủ.'));
                     break;
                 }
-            } while (levelUpResult);
+            } while (levelUpResult && levelUpResult.success);
         }
     }
 }
